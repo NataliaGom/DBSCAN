@@ -3,11 +3,17 @@
 // de ruido/outliers basado en DBSCAN (algoritmo "ingenuo", ver Paso 1 y Paso 2
 // del PDF del Proyecto Apertura).
 //
-// Formato de entrada (CSV): cabecera "x,y" seguida de una fila por punto.
-// Formato de salida (CSV): cabecera "x,y,tipo" donde tipo es:
+// Formato de entrada (CSV): sin encabezado (o con cabecera "x,y" opcional,
+// se detecta sola) -- compatible con el <n>_data.csv que genera el Paso 1
+// de DBSCAN_noise.ipynb (np.savetxt sin header).
+// Formato de salida (CSV): SIN encabezado de texto, 3 columnas (x,y,tipo),
+// donde tipo es:
 //    0 = ruido / outlier
 //    1 = punto core (de primer orden)
 //    2 = punto core (de segundo orden, re-etiquetado en el Paso 2)
+// IMPORTANTE: no se escribe línea de encabezado porque el Paso 2 del
+// notebook oficial lee el resultado con np.loadtxt(..., delimiter=","),
+// que NO salta encabezados -- una fila de texto ahí tronaría esa celda.
 #pragma once
 #include <vector>
 #include <string>
@@ -59,7 +65,6 @@ inline void escribirResultadoCSV(const std::string& ruta, const Puntos& p,
     if (!out.is_open()) {
         throw std::runtime_error("No se pudo abrir el archivo de salida: " + ruta);
     }
-    out << "x,y,tipo\n";
     out.precision(10);
     for (size_t i = 0; i < p.n(); i++) {
         out << p.x[i] << "," << p.y[i] << "," << tipo[i] << "\n";
