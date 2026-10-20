@@ -40,7 +40,7 @@ function Ejecutar-Prueba {
         [int]$H
     )
 
-    $csv = "datos_profesor\puntos_${N}.csv"
+    $csv = "datos\puntos_${N}.csv"
     $exe = ".\bin\dbscan_$Version.exe"
 
     if (!(Test-Path $csv)) {
